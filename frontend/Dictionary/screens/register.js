@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import { globalStyles } from "../styles/global";
+import { state } from "./../store";
 
 export default function Register({ navigation }) {
   return (
@@ -8,7 +9,10 @@ export default function Register({ navigation }) {
       <Text>Register</Text>
       <Button
         title="Navigate to Edit Dictionary"
-        onPress={() => navigation.navigate("EditDictionary")}
+        onPress={() => {
+          state.login = !state.login;
+          navigation.navigate("Dictionary");
+        }}
       />
     </View>
   );

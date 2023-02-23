@@ -20,7 +20,8 @@
     "react-native-web": "~0.18.9",
     "react-navigation": "^4.4.4",
     "react-navigation-drawer": "^2.7.2",
-    "react-navigation-stack": "^2.10.4"
+    "react-navigation-stack": "^2.10.4",
+    "valtio": "^1.10.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

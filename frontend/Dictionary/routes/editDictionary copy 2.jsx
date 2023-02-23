@@ -10,7 +10,7 @@ const screens = {
         screen: EditDictionary,
         navigationOptions: ({ navigation }) => {
             return {
-                headerTitle: () => <Header title='Edit Dictionary' navigation={navigation} />
+                headerTitle: () => <Header title='EditDictionary' navigation={navigation} />
             }
         },
     },

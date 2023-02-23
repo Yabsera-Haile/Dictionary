@@ -13,6 +13,7 @@ import { globalStyles } from "../styles/global";
 import { MaterialIcons } from "@expo/vector-icons";
 import Card from "../shared/card";
 import WordDefn from "./wordDefn";
+import { state } from "./../store";
 
 export default function Dictionary({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -47,6 +48,8 @@ export default function Dictionary({ navigation }) {
 
   return (
     <View style={globalStyles.container}>
+      <Text>{state.login ? "logged in" : "Logged out"}</Text>
+
       <Modal visible={modalOpen} animationType="slide">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.modalContent}>
