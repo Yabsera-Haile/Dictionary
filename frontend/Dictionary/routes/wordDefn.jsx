@@ -1,26 +1,26 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
-import About from '../screens/about';
+import WordDefn from '../screens/wordDefn';
 import Header from '../shared/header';
 
 
 
 const screens = {
-    About: {
-        screen: About,
+    WordDefn: {
+        screen: WordDefn,
         navigationOptions: ({ navigation }) => {
             return {
-                headerTitle: () => <Header title='About' navigation={navigation} />
+                headerTitle: () => <Header title='Word Definition' navigation={navigation} />
             }
         },
     },
 }
 
-const AboutStack = createStackNavigator(screens, {
+const WordDefnStack = createStackNavigator(screens, {
     defaultNavigationOptions: {
         headerTintColor: '#444',
         headerStyle: { backgroundColor: '#eee', height: 60 },
     }
 });
 
-export default AboutStack;
+export default WordDefnStack;

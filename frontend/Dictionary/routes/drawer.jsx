@@ -2,15 +2,24 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
 
 // stacks
-import HomeStack from './homeStack';
-import AboutStack from './aboutStack';
+import DictionaryStack from './dictionaryStack';
+import LanguagesStack from './languagesStack';
+import FavoritesStack from './favoritesStack';
+import ContributorStack from './contributorStack';
+
 
 const RootDrawerNavigator = createDrawerNavigator({
-    Home: {
-        screen: HomeStack,
+    Dictionary: {
+        screen: DictionaryStack,
     },
-    About: {
-        screen: AboutStack,
+    Languages: {
+        screen: LanguagesStack,
+    },
+    Favorites: {
+        screen: FavoritesStack,
+    },
+    Contributor: {
+        screen: ContributorStack,
     },
 });
 

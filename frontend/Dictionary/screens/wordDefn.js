@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
-import { globalStyles, images } from "../styles/global";
+import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 
-export default function ReviewDetails({ navigation }) {
+export default function WordDefn({ navigation }) {
   const rating = navigation.getParam("rating");
 
   return (
@@ -13,10 +13,10 @@ export default function ReviewDetails({ navigation }) {
           {navigation.getParam("title")}
         </Text>
         <Text>{navigation.getParam("body")}</Text>
-        <View style={styles.rating}>
-          <Text>GameZone rating: </Text>
+        {/* <View style={styles.rating}>
+          <Text>Word Defn: </Text>
           <Image source={images.ratings[rating]} />
-        </View>
+        </View> */}
       </Card>
     </View>
   );
