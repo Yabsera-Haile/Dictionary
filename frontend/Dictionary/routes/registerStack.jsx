@@ -1,34 +1,25 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
-import Register from '../screens/register';
-import EditDictionary from '../screens/editDictionary';
+import Register from '../apps/Screens/Register';
 import Header from '../shared/header';
 
+
 const screens = {
-    Register: {
+    Favorites: {
         screen: Register,
-        navigationOptions: {
-            title: 'Register',
-        }
-    },
-    EditDictionary: {
-        screen: EditDictionary,
         navigationOptions: ({ navigation }) => {
             return {
-                headerTitle: () => <Header title='EditDictionary' navigation={navigation} />
+                headerTitle: () => <Header title='' navigation={navigation} />
             }
         },
     },
-};
+}
 
-// home stack navigator screens
 const RegisterStack = createStackNavigator(screens, {
     defaultNavigationOptions: {
         headerTintColor: '#444',
-        headerStyle: { backgroundColor: '#eee', height: 60 }
+        headerStyle: { backgroundColor: '#eee', height: 60 },
     }
 });
 
 export default RegisterStack;
-
-

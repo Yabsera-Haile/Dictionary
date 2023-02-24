@@ -13,20 +13,11 @@ import { globalStyles } from "../styles/global";
 import { MaterialIcons } from "@expo/vector-icons";
 import Card from "../shared/card";
 import WordDefn from "./wordDefn";
-import { state } from "./../store";
-import axios from "axios";
+import firebase from "firebase/compat";
 
 export default function Dictionary({ navigation }) {
   const fetchData = async () => {
-    const requestOptions = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
     try {
-      // console.log(12);
-      // axios.get("http://192.168.0.23:5000/api/dictionary/get").then((res) => {
-      //   console.log(res);
-      // });
       await fetch("http://192.168.0.23:5000/api/dictionary/get")
         .then((response) => {
           if (response.status === 404) throw new Error("Resource not found");
@@ -46,34 +37,28 @@ export default function Dictionary({ navigation }) {
   };
 
   useEffect(() => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => console.log("User signed out!"));
     fetchData();
   }, []);
 
-  const [modalOpen, setModalOpen] = useState(false);
   const [words, setWords] = useState([]);
-
-  const addReview = (review) => {
-    review.key = Math.random().toString();
-    setReviews((currentReviews) => {
-      return [review, ...currentReviews];
-    });
-    setModalOpen(false);
-  };
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <View style={globalStyles.container}>
-      <Text>{state.login ? "logged in" : "Logged out"}</Text>
-
       <Modal visible={modalOpen} animationType="slide">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.modalContent}>
             <MaterialIcons
               name="close"
               size={24}
-              style={{ ...styles.modalToggle, ...styles.modalClose }}
+              // style={{ ...styles.modalToggle, ...styles.modalClose }}
               onPress={() => console.log(1)}
             />
-            <WordDefn addReview={addReview} />
+            <WordDefn />
           </View>
         </TouchableWithoutFeedback>
       </Modal>

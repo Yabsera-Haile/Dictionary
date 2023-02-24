@@ -4,6 +4,8 @@ import { createAppContainer } from 'react-navigation';
 // stacks
 import EditDictionary from "./editDictionary"
 import EditLanguage from './editLanguage';
+import RegisterStack from './registerStack';
+import DictionaryStack from './dictionaryStack';
 // import LogoutStack from './logout';
 
 const RootDrawerNavigator = createDrawerNavigator({
@@ -13,6 +15,14 @@ const RootDrawerNavigator = createDrawerNavigator({
     EditLanguage: {
         screen: EditLanguage,
     },
+    Register: {
+        screen: RegisterStack
+        ,
+    },
+    Logout: {
+        screen: DictionaryStack,
+    },
+
     // Logout: {
     //     // onItemPress({ route, focused })
     //     screen: LogoutStack,
