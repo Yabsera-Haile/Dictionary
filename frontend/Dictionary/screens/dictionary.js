@@ -14,14 +14,32 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Card from "../shared/card";
 import WordDefn from "./wordDefn";
 import { state } from "./../store";
+import axios from "axios";
 
 export default function Dictionary({ navigation }) {
   const fetchData = async () => {
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
     try {
-      console.log(12);
-      const response = await fetch("http://192.168.0.23:5000/dictionary/get");
-      const data = await response.json();
-      console.log(data, 1);
+      // console.log(12);
+      // axios.get("http://192.168.0.23:5000/api/dictionary/get").then((res) => {
+      //   console.log(res);
+      // });
+      await fetch("http://192.168.0.23:5000/api/dictionary/get")
+        .then((response) => {
+          if (response.status === 404) throw new Error("Resource not found");
+          // console.log("yes");
+          return response.json();
+        })
+        .then((responseData) => {
+          console.log(responseData);
+          setWords(responseData);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     } catch (err) {
       console.log(err);
     }
@@ -29,28 +47,10 @@ export default function Dictionary({ navigation }) {
 
   useEffect(() => {
     fetchData();
-  });
+  }, []);
+
   const [modalOpen, setModalOpen] = useState(false);
-  const [reviews, setReviews] = useState([
-    {
-      title: "Zelda, Breath of Fresh Air",
-      rating: 5,
-      body: "lorem ipsum",
-      key: "1",
-    },
-    {
-      title: "Gotta Catch Them All (again)",
-      rating: 4,
-      body: "lorem ipsum",
-      key: "2",
-    },
-    {
-      title: 'Not So "Final" Fantasy',
-      rating: 3,
-      body: "lorem ipsum",
-      key: "3",
-    },
-  ]);
+  const [words, setWords] = useState([]);
 
   const addReview = (review) => {
     review.key = Math.random().toString();
@@ -82,20 +82,21 @@ export default function Dictionary({ navigation }) {
         name="search"
         size={24}
         style={styles.modalToggle}
-        onPress={() => console.log(1)}
+        onPress={() => fetchData()}
       />
 
       <FlatList
-        data={reviews}
+        data={words}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-              console.log(1);
               navigation.navigate("WordDefn", item);
             }}
           >
             <Card>
-              <Text style={globalStyles.titleText}>{item.title}</Text>
+              <Text style={globalStyles.titleText}>{item.word}</Text>
+              <Text style={globalStyles.titleText}>{item.type}</Text>
+              <Text style={globalStyles.titleText}>{item.defn}</Text>
             </Card>
           </TouchableOpacity>
         )}
