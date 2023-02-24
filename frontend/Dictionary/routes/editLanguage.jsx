@@ -1,32 +1,25 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
-import Contributor from '../screens/contributor';
-import EditDictionary from '../screens/editDictionary';
+import EditLanguage from '../screens/editLanguage';
 import Header from '../shared/header';
 
 
 const screens = {
-    EditDictionary: {
-        screen: EditDictionary,
+    EditLanguage: {
+        screen: EditLanguage,
         navigationOptions: ({ navigation }) => {
             return {
-                headerTitle: () => <Header title='EditDictionary' navigation={navigation} />
+                headerTitle: () => <Header title='EditLanguage' navigation={navigation} />
             }
         },
     },
-    // UpdateWord: {
-    //     screen: UpdateWord,
-    //     navigationOptions: {
-    //         title: 'UpdateWord',
-    //     }
-    // },
 }
 
-const EditDictionaryStack = createStackNavigator(screens, {
+const EditLanguageStack = createStackNavigator(screens, {
     defaultNavigationOptions: {
         headerTintColor: '#444',
         headerStyle: { backgroundColor: '#eee', height: 60 },
     }
 });
 
-export default EditDictionaryStack;
+export default EditLanguageStack;

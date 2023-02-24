@@ -2,9 +2,9 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
 
 // stacks
-import EditDictionary from './logout';
+import EditDictionary from "./editDictionary"
 import EditLanguage from './editLanguage';
-import LogoutStack from './logout';
+// import LogoutStack from './logout';
 
 const RootDrawerNavigator = createDrawerNavigator({
     EditDictionary: {
@@ -13,9 +13,9 @@ const RootDrawerNavigator = createDrawerNavigator({
     EditLanguage: {
         screen: EditLanguage,
     },
-    Logout: {
-        screen: LogoutStack,
-    },
+    // Logout: {
+    //     // screen: LogoutStack,
+    // },
 
 });
 

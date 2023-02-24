@@ -13,9 +13,9 @@ import { globalStyles } from "../styles/global";
 import { MaterialIcons } from "@expo/vector-icons";
 import Card from "../shared/card";
 import WordDefn from "./wordDefn";
-import { state } from "./../store";
+import { state } from "../store";
 
-export default function Dictionary({ navigation }) {
+export default function EditLanguage({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [reviews, setReviews] = useState([
     {
@@ -71,12 +71,7 @@ export default function Dictionary({ navigation }) {
           >
             <Card>
               <Text style={globalStyles.titleText}>{item.title}</Text>
-              <MaterialIcons
-                name="edit"
-                size={24}
-                style={styles.modalToggle}
-                onPress={() => navigation.navigate("editWordDefn", item)}
-              />
+              <MaterialIcons name="edit" size={24} style={styles.modalToggle} />
             </Card>
           </TouchableOpacity>
         )}

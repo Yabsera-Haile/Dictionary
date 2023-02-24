@@ -1,6 +1,6 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
-import Contributor from '../screens/contributor';
+import EditWordDefn from '../screens/editWordDefn';
 import EditDictionary from '../screens/editDictionary';
 import Header from '../shared/header';
 
@@ -14,12 +14,12 @@ const screens = {
             }
         },
     },
-    // UpdateWord: {
-    //     screen: UpdateWord,
-    //     navigationOptions: {
-    //         title: 'UpdateWord',
-    //     }
-    // },
+    EditWordDefn: {
+        screen: EditWordDefn,
+        navigationOptions: {
+            title: 'EditWordDefn',
+        }
+    },
 }
 
 const EditDictionaryStack = createStackNavigator(screens, {
