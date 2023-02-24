@@ -14,7 +14,8 @@ const RootDrawerNavigator = createDrawerNavigator({
         screen: EditLanguage,
     },
     // Logout: {
-    //     // screen: LogoutStack,
+    //     // onItemPress({ route, focused })
+    //     screen: LogoutStack,
     // },
 
 });

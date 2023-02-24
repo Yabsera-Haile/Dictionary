@@ -5,7 +5,7 @@ import { createAppContainer } from 'react-navigation';
 import DictionaryStack from './dictionaryStack';
 import LanguagesStack from './languagesStack';
 import FavoritesStack from './favoritesStack';
-import ContributorStack from './contributorStack';
+import loginStack from './loginStack';
 
 
 const RootDrawerNavigator = createDrawerNavigator({
@@ -19,7 +19,7 @@ const RootDrawerNavigator = createDrawerNavigator({
         screen: FavoritesStack,
     },
     Contributor: {
-        screen: ContributorStack,
+        screen: loginStack,
     },
 });
 

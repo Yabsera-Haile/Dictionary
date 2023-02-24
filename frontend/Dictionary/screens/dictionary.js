@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -16,6 +16,20 @@ import WordDefn from "./wordDefn";
 import { state } from "./../store";
 
 export default function Dictionary({ navigation }) {
+  const fetchData = async () => {
+    try {
+      console.log(12);
+      const response = await fetch("http://192.168.0.23:5000/dictionary/get");
+      const data = await response.json();
+      console.log(data, 1);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  });
   const [modalOpen, setModalOpen] = useState(false);
   const [reviews, setReviews] = useState([
     {
@@ -57,7 +71,7 @@ export default function Dictionary({ navigation }) {
               name="close"
               size={24}
               style={{ ...styles.modalToggle, ...styles.modalClose }}
-              onPress={() => setModalOpen(false)}
+              onPress={() => console.log(1)}
             />
             <WordDefn addReview={addReview} />
           </View>
@@ -68,14 +82,17 @@ export default function Dictionary({ navigation }) {
         name="search"
         size={24}
         style={styles.modalToggle}
-        onPress={() => setModalOpen(true)}
+        onPress={() => console.log(1)}
       />
 
       <FlatList
         data={reviews}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("WordDefn", item)}
+            onPress={() => {
+              console.log(1);
+              navigation.navigate("WordDefn", item);
+            }}
           >
             <Card>
               <Text style={globalStyles.titleText}>{item.title}</Text>
