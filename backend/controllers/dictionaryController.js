@@ -30,6 +30,7 @@ exports.createDictionary = async (req, res) => {
 
 exports.getDictionary = async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*"); 
+  const lang=req.query.lang
   try {
     const request = await Dictionary.findAll({
       attribute:["id","word","defn","type","example"],
@@ -42,6 +43,7 @@ exports.getDictionary = async (req, res) => {
       order: [
             ['word', 'ASC'],
         ],
+      where:{"$Language.id$":lang,}
     });
     const result=request.map((reqs)=>{
       return {

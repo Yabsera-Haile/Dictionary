@@ -12,10 +12,14 @@ export default function WordDefn({ navigation }) {
         <Text style={globalStyles.titleText}>
           {navigation.getParam("word")}
         </Text>
-        <Text>{navigation.getParam("language")}</Text>
         <Text>{navigation.getParam("type")}</Text>
         <Text>{navigation.getParam("defn")}</Text>
         <Text>{navigation.getParam("example")}</Text>
+
+        {/* <View style={styles.rating}>
+          <Text>Word Defn: </Text>
+          <Image source={images.ratings[rating]} />
+        </View> */}
       </Card>
     </View>
   );

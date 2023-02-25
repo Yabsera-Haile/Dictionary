@@ -8,6 +8,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Keyboard,
+  TextInput
 } from "react-native";
 import { globalStyles } from "../styles/global";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -16,72 +17,98 @@ import WordDefn from "./wordDefn";
 import firebase from "firebase/compat";
 
 export default function Dictionary({ navigation }) {
+  
   const fetchData = async () => {
     try {
-      await fetch("http://192.168.0.23:5000/api/dictionary/get")
-        .then((response) => {
-          if (response.status === 404) throw new Error("Resource not found");
-          // console.log("yes");
-          return response.json();
-        })
-        .then((responseData) => {
-          console.log(responseData);
-          setWords(responseData);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      // console.log(12);
+      const response = await fetch("http://192.168.41.229:5000/api/dictionary/get");
+      const data = await response.json();
+      setWords(data)
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => console.log("User signed out!"));
+    firebase.auth().signOut().then(() => console.log('User signed out!'))
     fetchData();
-  }, []);
-
-  const [words, setWords] = useState([]);
+  },[]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [words, setWords] = useState([]);
+  const [search, setSearch] = useState();
+
+
+  const addReview = (review) => {
+    review.key = Math.random().toString();
+    setReviews((currentReviews) => {
+      return [review, ...currentReviews];
+    });
+    setModalOpen(false);
+  };
+
+  const searchWord=async (event) => {
+    const val=event.nativeEvent.text
+    // console.log(event.nativeEvent);
+      fetch("http://192.168.41.229:5000/api/dictionary/search", {
+            method: "POST",
+            body: JSON.stringify({
+              search:val
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setWords(data)
+              }
+            );
+  };
 
   return (
     <View style={globalStyles.container}>
+
       <Modal visible={modalOpen} animationType="slide">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.modalContent}>
             <MaterialIcons
               name="close"
               size={24}
-              // style={{ ...styles.modalToggle, ...styles.modalClose }}
+              style={{ ...styles.modalToggle, ...styles.modalClose }}
               onPress={() => console.log(1)}
             />
-            <WordDefn />
+            <WordDefn addReview={addReview} />
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+                <TextInput
+                style={styles.input}
+                placeholder="Search"
+                value={search}
+                onChangeText={setSearch}
+                onChange={searchWord}
+                autoCapitalize="words"
+              />
 
-      <MaterialIcons
+      {/* <MaterialIcons
         name="search"
         size={24}
         style={styles.modalToggle}
-        onPress={() => fetchData()}
-      />
+        onPress={() => console.log(1)}
+      /> */}
 
       <FlatList
         data={words}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
+              console.log(1);
               navigation.navigate("WordDefn", item);
             }}
           >
             <Card>
               <Text style={globalStyles.titleText}>{item.word}</Text>
-              <Text style={globalStyles.titleText}>{item.type}</Text>
-              <Text style={globalStyles.titleText}>{item.defn}</Text>
             </Card>
           </TouchableOpacity>
         )}
@@ -108,4 +135,13 @@ const styles = StyleSheet.create({
   modalContent: {
     flex: 1,
   },
+  input: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 30,
+        marginBottom: 5,
+        paddingHorizontal: 10,
+        marginBottom:'5%'
+      },
 });
