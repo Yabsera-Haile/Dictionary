@@ -4,19 +4,27 @@ import { useState } from 'react';
 import firebase from '../firebase/FireBase';
 import { Dimensions } from 'react-native';
 import MainBtn from '../../components/mainBtn';
+import { globalStyles } from '../../styles/global';
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
   
     const handleSignIn = async () => {
+      if(password === "" || email === ""){
+        setError("all fields are required") 
+        return;
+      }
+      if(password.length < 6){
+        setError("Password length must be greater than 6") 
+        return;
+      }
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password).then(()=>{
-                alert("saved")
+                alert("Welcome Back")
             });
           } catch (error) {
-            alert(error.message)
-            setError(error.message);
+            setError("Email address is badly formatted");
           }
     };
   
@@ -32,6 +40,7 @@ export default function Login() {
           onChangeText={setEmail}
           autoCapitalize="none"
           keyboardType="email-address"
+          
         />
         <Text style={styles.text}>Password</Text>
         <TextInput
@@ -41,8 +50,9 @@ export default function Login() {
           onChangeText={setPassword}
           secureTextEntry={true}
         />
+       {error ? <Text style={globalStyles.error}>{error}</Text> : null}
        <MainBtn text={"Sign In"} handleSubmit={handleSignIn}/>
-        {error ? <Text>{error}</Text> : null}
+       
         </View>
       </View>
     );
@@ -93,5 +103,3 @@ export default function Login() {
       textAlign: 'center'
     },
   });
-
- 

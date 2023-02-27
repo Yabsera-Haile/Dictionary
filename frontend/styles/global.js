@@ -28,6 +28,17 @@ export const globalStyles = StyleSheet.create({
     marginTop: 6,
     textAlign: 'center',
   },
+  error: {
+    height: 40,
+    backgroundColor: 'rgba(255,30,30,0.7)',
+    borderRadius: 30,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    marginBottom:'10%',
+    color:"white",
+    paddingTop:10,
+    textAlign:"center"
+  },
 });
 
 export const images = {

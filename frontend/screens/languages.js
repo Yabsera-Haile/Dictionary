@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useContext} from "react";
 import {  StyleSheet,
   View,
   Text,
@@ -10,16 +10,21 @@ import {  StyleSheet,
 import Card from "../shared/card";
 import {AsyncStorage} from 'react-native';
 import { globalStyles } from "../styles/global";
+import { DictionaryContext } from "../context/DictionaryContext";
 
-export default function About() {
-  const [lang, setLang] = useState([]);
+
+export default function Languages() {
+  const ip="192.168.5.229"
+  const [langList, setlangList] = useState([]);
+  const {lang,setLang}=useContext(DictionaryContext)
+
   const fetchData = async () => {
     try {
       // console.log(12);
-      const response = await fetch("http://192.168.41.229:5000/api/language/get");
+      const response = await fetch("http://"+ip+":5000/api/language/get");
       const data = await response.json();
       // console.log(data);
-      setLang(data);
+      setlangList(data);
     } catch (err) {
       console.log(err);
     }
@@ -27,13 +32,10 @@ export default function About() {
   const handleChange = (id)=>{
       
       const _storeData = async (id) => {
-      
         try {
-          await AsyncStorage.setItem(
-            'TASKS',
-            `${id}`,
-          );
-        
+            setLang(id)
+            // const value = await AsyncStorage.getItem('TASKS');
+            // console.log(value)
         } catch (error) {
           // Error saving data
         }
@@ -48,7 +50,7 @@ export default function About() {
     <View style={globalStyles.container}>
       <Text>Languages </Text>
         <FlatList
-        data={lang}
+        data={langList}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
@@ -56,7 +58,7 @@ export default function About() {
             }}
           >
             <Card>
-              <Text style={globalStyles.titleText}>{item.title}</Text>
+              <Text style={item.id==lang?styles.selected:globalStyles.titleText}>{item.title}</Text>
             </Card>
           </TouchableOpacity>
         )}
@@ -64,3 +66,12 @@ export default function About() {
     </View>
   );
 }
+
+
+const styles = StyleSheet.create({
+  selected: {
+    fontSize:20,
+    fontWeight:"600",
+    color:"rgb(173, 159, 54)"}
+
+});

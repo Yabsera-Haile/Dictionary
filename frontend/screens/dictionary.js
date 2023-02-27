@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -8,31 +8,38 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Keyboard,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from "react-native";
 import { globalStyles } from "../styles/global";
 import { MaterialIcons } from "@expo/vector-icons";
 import Card from "../shared/card";
 import WordDefn from "./wordDefn";
 import firebase from "firebase/compat";
-
+import { DictionaryContext } from "../context/DictionaryContext";
 export default function Dictionary({ navigation }) {
-  
-  const fetchData = async () => {
-    try {
-      // console.log(12);
-      const response = await fetch("http://192.168.41.229:5000/api/dictionary/get");
-      const data = await response.json();
-      setWords(data)
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    const ip="192.168.5.229"
 
-  useEffect(() => {
-    firebase.auth().signOut().then(() => console.log('User signed out!'))
-    fetchData();
-  },[]);
+    const {lang,setLang}=useContext(DictionaryContext)
+
+
+    const fetchData = async () => {
+      try {
+        // console.log(12);
+      //  retrieveData()
+        const response = await fetch("http://"+ip+":5000/api/dictionary/get?lang="+lang);
+        const data = await response.json();
+        setWords(data)
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    
+    useEffect(() => {
+      firebase.auth().signOut().then(() => console.log('User signed out!'))
+      fetchData();
+  },[lang]);
+  
   const [modalOpen, setModalOpen] = useState(false);
   const [words, setWords] = useState([]);
   const [search, setSearch] = useState();
@@ -49,10 +56,11 @@ export default function Dictionary({ navigation }) {
   const searchWord=async (event) => {
     const val=event.nativeEvent.text
     // console.log(event.nativeEvent);
-      fetch("http://192.168.41.229:5000/api/dictionary/search", {
+      fetch("http://"+ip+":5000/api/dictionary/search", {
             method: "POST",
             body: JSON.stringify({
-              search:val
+              search:val,
+              lang:lang
             }),
             headers: {
               "Content-Type": "application/json",
@@ -60,7 +68,6 @@ export default function Dictionary({ navigation }) {
           })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 setWords(data)
               }
             );

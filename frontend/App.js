@@ -9,6 +9,7 @@ import NavigatorAdmin from "./routes/drawerAdmin";
 import { state } from "./store";
 import * as React from "react";
 import { useState, useEffect } from "react";
+import  {DictionaryContextProvider} from "./context/DictionaryContext";
 
 // const Drawer = createDrawerNavigator();
 export default function App() {
@@ -22,7 +23,13 @@ export default function App() {
     return subscriber;
   }, []);
 
-  return user ? <NavigatorAdmin /> : <Navigator />;
+  return (
+
+    <DictionaryContextProvider>
+    {user ? <NavigatorAdmin /> : <Navigator />}
+    </DictionaryContextProvider>
+
+    );
 }
 
 const styles = StyleSheet.create({

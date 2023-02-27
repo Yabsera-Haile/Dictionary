@@ -10,8 +10,8 @@ import AddStack from './addStack';
 // import LogoutStack from './logout';
 
 const RootDrawerNavigator = createDrawerNavigator({
-    Add: {
-        screen: AddStack,
+    AddWord: {
+        screen: AddStack
     }, 
     EditDictionary: {
         screen: EditDictionary,
@@ -28,6 +28,6 @@ const RootDrawerNavigator = createDrawerNavigator({
     },
 
 
-});
+},{drawerType :  'slide' , hideStatusBar : true});
 
 export default createAppContainer(RootDrawerNavigator);

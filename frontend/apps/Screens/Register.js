@@ -3,6 +3,7 @@ import React from 'react'
 import { useState } from 'react';
 import firebase from '../firebase/FireBase';
 import { Dimensions } from 'react-native';
+import { globalStyles } from '../../styles/global';
 export default function Register() {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
@@ -11,7 +12,18 @@ export default function Register() {
     const [error, setError] = useState('');
   
     const handleRegister = async (email , password , name) => {
-        
+      if(password === "" || email === ""||  cPassword === ""){
+        setError("all fields are required") 
+        return;
+      }
+      if(password.length < 6){
+        setError("password length must be >6") 
+        return;
+      }
+      if(password !== cPassword){
+        setError("Password doesn't match") 
+        return;
+      }
             await firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(()=>{
                 alert("saved")
@@ -29,10 +41,10 @@ export default function Register() {
                 }).then(()=>{
                     firebase.firestore().collection('user').doc(firebase.auth().currentUser.uid).set({name : name , email})
                 }).catch((error)=>{
-                    alert('error on sating name')
+                    alert('error ')
                 })
             }).catch(error=>{
-                    alert("fire base problem")
+                    alert("connection base problem")
                 })
          
     };
@@ -67,10 +79,18 @@ export default function Register() {
           onChangeText={setPassword}
           secureTextEntry={true}
         />
+          <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          value={cPassword}
+          onChangeText={setCPassword}
+          secureTextEntry={true}
+        />
+        {error ? <Text style={globalStyles.error}>{error}</Text> : null}
         <TouchableOpacity style={styles.button} onPress={()=>handleRegister(email , password , name)}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
-        {error ? <Text>{error}</Text> : null}
+        
         </View>
       </View>
     );
@@ -121,5 +141,3 @@ export default function Register() {
         textAlign: 'center'
       },
   });
-
- 

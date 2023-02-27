@@ -1,24 +1,26 @@
 import { StyleSheet, Text, View , TextInput , TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import { Dimensions } from 'react-native';
+import { DictionaryContext } from '../context/DictionaryContext';
 export default function AddContent() {
+    const ip="192.168.5.229"
     const [word, setWord] = useState('');
     const [example, setExample] = useState('');
     const [wordType, setWordType] = useState('');
-    const [language, setLanguage] = useState('1777aed8-5d0d-4762-9cb6-4bca9671ee44');
+    const {lang, setLang} = useContext(DictionaryContext)
     const [defn, setDefn] = useState('');
     const handleUpdate = (word , wordType , example , defn) =>{
         // console.log("Checker")
         
-      fetch("http://192.168.41.229:5000/api/dictionary/add", {
+      fetch("http://"+ip+":5000/api/dictionary/add", {
             method: "POST",
             body: JSON.stringify({
               word:word , 
               defn : defn,
               type:wordType ,
               example : example,
-              language,
+              language:lang,
             }),
             headers: {
               "Content-Type": "application/json",
@@ -60,7 +62,7 @@ export default function AddContent() {
          numberOfLines={2}
         onChangeText={setExample}
         value={example}/>
-         <Text style={styles.text}>Defination</Text>
+         <Text style={styles.text}>Definition</Text>
         <TextInput
          multiline={true}
          style={styles.def}

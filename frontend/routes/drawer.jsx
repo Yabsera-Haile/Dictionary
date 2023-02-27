@@ -21,6 +21,6 @@ const RootDrawerNavigator = createDrawerNavigator({
     Contributor: {
         screen: loginStack,
     },
-});
+},{drawerType :  'slide' , hideStatusBar : true});
 
 export default createAppContainer(RootDrawerNavigator);

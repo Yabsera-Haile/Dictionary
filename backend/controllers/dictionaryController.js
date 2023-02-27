@@ -65,7 +65,7 @@ exports.getDictionary = async (req, res) => {
 
 exports.searchDictionary = async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*"); 
-  const { search} = req.body;
+  const { search,lang} = req.body;
   
   try {
     const request = await Dictionary.findAll({
@@ -76,7 +76,7 @@ exports.searchDictionary = async (req, res) => {
           attributes:["title"]
         }
       ],
-      where:{word: { [Op.like]: `${search}%` },},
+      where:{word: { [Op.like]: `${search}%` },language:lang},
       order: [
             ['word', 'ASC'],
         ],

@@ -1,10 +1,58 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image,TouchableOpacity,AsyncStorage } from "react-native";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 
 export default function WordDefn({ navigation }) {
   const rating = navigation.getParam("rating");
+  const handleChange = ({id ,word , defn , wordType , example , language})=>{
+     
+      const _storeData =   async () => {
+        // console.log({id ,word , defn , wordType , example , language});
+        let UID123_object  = [];
+        let UID123_delta = {
+              word:word , 
+              defn : defn,
+              type:wordType ,
+              example : example,
+              language,
+        };
+        try {
+          const value = await AsyncStorage.getItem('lang');
+          if (value !== null) {
+            // We have data!!
+            const n = JSON.parse(value)
+            UID123_object = n  
+            UID123_object.push(UID123_delta)
+            try {
+              await AsyncStorage.setItem(
+                'lang',
+                JSON.stringify(UID123_object),
+              );
+            } catch (error) {
+              // Error saving data
+            }
+          }else{
+            try {
+              UID123_object.push(UID123_delta)
+              await AsyncStorage.setItem(
+                'lang',
+                JSON.stringify(UID123_object),
+              );
+            } catch (error) {
+              // Error saving data
+            }
+          }
+          alert("Word Added to Favorites")
+        } catch (error) {
+          console.log(error);
+          // Error retrieving data
+        }}
+
+      
+ 
+    
+    _storeData() }
 
   return (
     <View style={globalStyles.container}>
@@ -21,6 +69,10 @@ export default function WordDefn({ navigation }) {
           <Image source={images.ratings[rating]} />
         </View> */}
       </Card>
+        <TouchableOpacity style={styles.button} onPress={()=>handleChange({id:navigation.getParam("id"),word:navigation.getParam("word"),
+        defn:navigation.getParam("defn"),wordType:navigation.getParam("type"),example:navigation.getParam("example"),language:navigation.getParam("language")})}>
+          <Text style={styles.buttonText}>Favorite</Text>
+        </TouchableOpacity>
     </View>
   );
 }
@@ -34,4 +86,18 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#eee",
   },
+        button: {
+        backgroundColor: 'blue',
+        paddingVertical: 8,
+        paddingHorizontal: 20,
+        borderRadius: 30,
+        marginTop:'10%'
+        
+      },
+      buttonText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center'
+      },
 });
