@@ -34,7 +34,7 @@ export default function Dictionary({ navigation }) {
         console.log(err);
       }
     };
-    
+    ``
     useEffect(() => {
       firebase.auth().signOut().then(() => console.log('User signed out!'))
       fetchData();

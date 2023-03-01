@@ -7,23 +7,28 @@ import EditLanguage from './editLanguage';
 import DictionaryStack from './dictionaryStack';
 import RegisterStack from './registerStack';
 import AddStack from './addStack';
+import AddLang from './addLang';
+
 // import LogoutStack from './logout';
 
 const RootDrawerNavigator = createDrawerNavigator({
-    AddWord: {
+    "Add Word": {
         screen: AddStack
     }, 
-    EditDictionary: {
+    "Add Language": {
+        screen: AddLang
+    }, 
+    "Delete Word": {
         screen: EditDictionary,
     },
-    Register: {
-        screen: RegisterStack
-        ,
-    },
-    EditLanguage: {
+    "Delete Language": {
         screen: EditLanguage,
     },
-    Logout: {
+    "Register User": {
+        screen: RegisterStack
+    
+    },
+    "Logout": {
         screen: DictionaryStack,
     },
 

@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect, useContext} from "react";
 import {  
   StyleSheet,
   View,
@@ -14,12 +14,13 @@ import {AsyncStorage} from 'react-native';
 import { globalStyles } from "../styles/global";
 import { MaterialIcons } from "@expo/vector-icons";
 import WordDefn from "./wordDefn";
+import { DictionaryContext } from "../context/DictionaryContext";
 export default function Favorites({ navigation }) {
-  const [lang, setLang] = useState([]);
+  const {change, setChange} = useContext(DictionaryContext)
   const [modalOpen, setModalOpen] = useState(false);
   const [words, setWords] = useState([]);
   const [search, setSearch] = useState();
- 
+
   const fetchData = async () => {
     const _retrieveData = async () => {
       try {
@@ -37,10 +38,13 @@ export default function Favorites({ navigation }) {
     };   
     _retrieveData() 
   };
+
   useEffect(()=>{
       fetchData()
     console.log(words)
-  },[])
+  },[change])
+
+
   const addReview = (review) => {
     review.key = Math.random().toString();
     setReviews((currentReviews) => {
@@ -65,9 +69,9 @@ export default function Favorites({ navigation }) {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-          <TouchableOpacity style={styles.button} onPress={()=>fetchData()}>
+          {/* <TouchableOpacity style={styles.button} onPress={()=>fetchData()}>
           <Text style={styles.buttonText}>Refresh List</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
                 {/* <TextInput
                 style={styles.input}
                 placeholder="Search"

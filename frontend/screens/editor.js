@@ -2,10 +2,7 @@ import { StyleSheet, Text, View , TextInput , TouchableOpacity } from 'react-nat
 import React from 'react'
 import { useState } from 'react';
 import { Dimensions } from 'react-native';
-
-export default function EditWord({navigation}) {
-    const item=navigation.getParam('item')
-    console.log(item);
+export default function AddContent({navigation}) {
     const [word, setWord] = useState(navigation.getParam('word'));
     const [example, setExample] = useState(navigation.getParam('word'));
     const [wordType, setWordType] = useState(navigation.getParam("type"));
@@ -13,9 +10,8 @@ export default function EditWord({navigation}) {
     const [defn, setDefn] = useState(navigation.getParam("defn"));
     const handleUpdate = (word , wordType , example , defn) =>{
         // console.log("Checker")
-      const ip="192.168.5.229"
-      
-      fetch("http://"+ip+":5000/api/dictionary/update", {
+        
+      fetch("http://192.168.0.34:19000/api/dictionary/add", {
             method: "POST",
             body: JSON.stringify({
               word:word , 

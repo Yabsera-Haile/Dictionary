@@ -39,6 +39,17 @@ export const globalStyles = StyleSheet.create({
     paddingTop:10,
     textAlign:"center"
   },
+   title : {
+   fontSize:30,
+   fontWeight:"800",
+   alignSelf:"center",
+   marginBottom : 40  
+  },
+  cont :{
+    fontSize:20,
+    fontWeight:"200",
+    margin : 10  
+  },
 });
 
 export const images = {

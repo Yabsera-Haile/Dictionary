@@ -3,24 +3,17 @@ import React from 'react'
 import { useState,useContext } from 'react';
 import { Dimensions } from 'react-native';
 import { DictionaryContext } from '../context/DictionaryContext';
-export default function AddContent() {
+export default function AddLanguage() {
     const ip="192.168.5.229"
-    const [word, setWord] = useState('');
-    const [example, setExample] = useState('');
-    const [wordType, setWordType] = useState('');
-    const {lang, setLang} = useContext(DictionaryContext)
-    const [defn, setDefn] = useState('');
-    const handleUpdate = (word , wordType , example , defn) =>{
+    const [lang, setLang] = useState('');
+  
+    const handleUpdate = (lang) =>{
         // console.log("Checker")
         
-      fetch("http://"+ip+":5000/api/dictionary/add", {
+      fetch("http://"+ip+":5000/api/language/create", {
             method: "POST",
             body: JSON.stringify({
-              word:word , 
-              defn : defn,
-              type:wordType ,
-              example : example,
-              language:lang,
+              title:lang
             }),
             headers: {
               "Content-Type": "application/json",
@@ -28,13 +21,7 @@ export default function AddContent() {
           })
             .then((response) => response.json())
             .then((data) => {
-                alert("Word has been added.")
-                setDefn("")
-                setWord("")
-                setExample("")
-                setWordType("")
-                setWord("")
-
+                alert("Language has been added.")
               }
             );
           }
@@ -44,42 +31,18 @@ export default function AddContent() {
     return (
       <View style={styles.container}>
         <View style={styles.icontainer}>
-        <Text style={styles.text}>Word</Text>
+        <Text style={styles.text}>Language Title</Text>
         <TextInput
           style={styles.input}
-          placeholder="Word"
-          value={word}
-          onChangeText={setWord}
+          placeholder="Language Name"
+          value={lang}
+          onChangeText={setLang}
           autoCapitalize="words"
         />
-        <Text style={styles.text}>Word Type</Text>
-        <TextInput
-           style={styles.input}
-           placeholder="Word"
-           value={wordType}
-           onChangeText={setWordType}
-           autoCapitalize="words"
-        />
 
-            <Text style={styles.text}>Example</Text>
-        <TextInput
-         multiline={true}
-         style={styles.input}
-         numberOfLines={2}
-        onChangeText={setExample}
-        value={example}/>
-         <Text style={styles.text}>Definition</Text>
-        <TextInput
-         multiline={true}
-         style={styles.def}
-         numberOfLines={5}
-        onChangeText={setDefn}
-        value={defn}/>
-      
-
-
-        <TouchableOpacity style={styles.button} onPress={()=>handleUpdate(word , wordType , example , defn )}>
-          <Text style={styles.buttonText}>Update Dictionary</Text>
+    
+        <TouchableOpacity style={styles.button} onPress={()=>handleUpdate(lang)}>
+          <Text style={styles.buttonText}>Add Language</Text>
         </TouchableOpacity>
     
         </View>
@@ -90,7 +53,7 @@ export default function AddContent() {
   const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        marginTop:10,
         alignItems: 'center',
         width: Dimensions.get('window').width
       },
@@ -124,7 +87,6 @@ export default function AddContent() {
         marginBottom: 5,
         paddingHorizontal: 10,
         marginBottom:'5%'
-        , textAlignVertical: 'top'
       },
       button: {
         backgroundColor: 'blue',

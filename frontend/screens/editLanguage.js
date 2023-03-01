@@ -1,77 +1,90 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
+import React,{useState,useEffect,useContext} from "react";
+import {  StyleSheet,
   View,
   Text,
   TouchableOpacity,
   FlatList,
   Modal,
   TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import { globalStyles } from "../styles/global";
-import { MaterialIcons } from "@expo/vector-icons";
+  Keyboard, } from "react-native";
 import Card from "../shared/card";
-import WordDefn from "./wordDefn";
-import { state } from "../store";
+import {AsyncStorage} from 'react-native';
+import { globalStyles } from "../styles/global";
+import { DictionaryContext } from "../context/DictionaryContext";
+import { MaterialIcons } from "@expo/vector-icons";
 
-export default function EditLanguage({ navigation }) {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [reviews, setReviews] = useState([
-    {
-      title: "Zelda, Breath of Fresh Air",
-      rating: 5,
-      body: "lorem ipsum",
-      key: "1",
-    },
-    {
-      title: "Gotta Catch Them All (again)",
-      rating: 4,
-      body: "lorem ipsum",
-      key: "2",
-    },
-    {
-      title: 'Not So "Final" Fantasy',
-      rating: 3,
-      body: "lorem ipsum",
-      key: "3",
-    },
-  ]);
 
-  const addReview = (review) => {
-    review.key = Math.random().toString();
-    setReviews((currentReviews) => {
-      return [review, ...currentReviews];
-    });
-    setModalOpen(false);
+export default function Languages() {
+  const ip="192.168.5.229"
+  const [langList, setlangList] = useState([]);
+  const {lang,setLang}=useContext(DictionaryContext)
+  const [change,setChange]=useState(true)
+  const fetchData = async () => {
+    try {
+      // console.log(12);
+      const response = await fetch("http://"+ip+":5000/api/language/get");
+      const data = await response.json();
+      // console.log(data);
+      setlangList(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
+  const handleChange = (id)=>{
+      
+      const _storeData = async (id) => {
+        try {
+            setLang(id)
+            // const value = await AsyncStorage.getItem('TASKS');
+            // console.log(value)
+        } catch (error) {
+          // Error saving data
+        }
+      };
+      _storeData(id)
+    }
 
+  const deleteLang=(id)=>{
+       fetch("http://"+ip+":5000/api/language/delete", {
+            method: "POST",
+            body: JSON.stringify({
+              id:id
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+                alert("Language has been deleted.")
+                setChange((prev)=>{!prev})
+              }
+            );
+    }
+  useEffect(() => {
+    fetchData();
+  },[change]);
   return (
     <View style={globalStyles.container}>
-      <Modal visible={modalOpen} animationType="slide">
-        <Text>{state.login ? "logged in" : "Logged out"}</Text>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.modalContent}>
-            <MaterialIcons
-              name="close"
-              size={24}
-              style={{ ...styles.modalToggle, ...styles.modalClose }}
-              onPress={() => setModalOpen(false)}
-            />
-            <WordDefn addReview={addReview} />
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-
-      <FlatList
-        data={reviews}
+      <Text>Languages </Text>
+        <FlatList
+        data={langList}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("editWordDefn", item)}
+          onPress={() => {
+              handleChange(item.id)
+            }}
           >
-            <Card>
-              <Text style={globalStyles.titleText}>{item.title}</Text>
-              <MaterialIcons name="edit" size={24} style={styles.modalToggle} />
+            <Card  >
+              <View style={styles.card}>
+              <Text style={item.id==lang?styles.selected:globalStyles.titleText}>{item.title}</Text>
+                <MaterialIcons
+                name="delete"
+                size={24}
+                style={styles.modalToggle}
+                onPress={() => deleteLang(item.id)}
+              />
+              </View>
             </Card>
           </TouchableOpacity>
         )}
@@ -80,22 +93,30 @@ export default function EditLanguage({ navigation }) {
   );
 }
 
+
 const styles = StyleSheet.create({
-  modalToggle: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 10,
+  selected: {
+    fontSize:20,
+    fontWeight:"600",
+    color:"rgb(173, 159, 54)"},
+
+    modalToggle: {
     borderWidth: 1,
     borderColor: "#f2f2f2",
-    padding: 10,
     borderRadius: 10,
-    alignSelf: "center",
   },
   modalClose: {
-    marginTop: 20,
+    marginTop: 0,
     marginBottom: 0,
   },
   modalContent: {
     flex: 1,
   },
+  card:{
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:'space-between'
+  }
+
 });
+
